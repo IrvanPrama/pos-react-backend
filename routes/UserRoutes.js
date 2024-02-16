@@ -12,7 +12,7 @@ import {
   uploadProfile,
 } from "../controllers/UserControllers.js";
 
-import { verifyUser } from "../middleware/AuthUser.js";
+import { verifyUser, adminOnly } from "../middleware/AuthUser.js";
 
 // Konfigurasi Multer untuk meng-handle upload gambar
 const storage = multer.diskStorage({
@@ -31,11 +31,11 @@ const app = express();
 router.post("/upload/profile/:id", upload.single("image"));
 
 // Tentukan rute-rute Anda
-router.get("/users", getUsers);
-router.get("/user/edit/:id", getUserById);
-router.patch("/user/update/:id", updateUser); // Menggunakan Multer untuk pengunggahan
-router.post("/user/add", addUser);
-router.delete("/delete/users/:id", destroyUser);
+router.get("/users", verifyUser, adminOnly, getUsers);
+router.get("/user/edit/:id", verifyUser, adminOnly, getUserById);
+router.patch("/user/update/:id", verifyUser, adminOnly, updateUser); // Menggunakan Multer untuk pengunggahan
+router.post("/user/add", verifyUser, adminOnly, addUser);
+router.delete("/delete/users/:id", verifyUser, adminOnly, destroyUser);
 
 // Export router untuk digunakan di dalam aplikasi utama Anda
 export default router;

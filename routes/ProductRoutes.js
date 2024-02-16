@@ -12,8 +12,8 @@ import { verifyUser } from "../middleware/AuthUser.js";
 //definisikan router
 const router = express.Router();
 
-router.get("/product", getProducts);
-router.post("/product/send", createProduct);
-router.delete("/product/destroy/:id", destroyData);
+router.get("/product", verifyUser, getProducts);
+router.post("/product/send", verifyUser, createProduct);
+router.delete("/product/destroy/:id", verifyUser, destroyData);
 
 export default router;

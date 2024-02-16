@@ -13,13 +13,13 @@ import { verifyUser, adminOnly } from "../middleware/AuthUser.js";
 const router = express.Router();
 
 // Rute untuk mendapatkan seluruh transaksi
-router.get("/packettransactions", verifyUser, adminOnly, getPackets);
-router.get("/packet/added", verifyUser, adminOnly, addedPackets);
-router.get("/packet/taked", verifyUser, adminOnly, takedPackets);
-router.get("/packet/take/:id", verifyUser, adminOnly, takePacket);
-router.get("/packet/edit/:id", verifyUser, adminOnly, takePacket);
-router.post("/packet/add", verifyUser, adminOnly, addPacket);
-router.patch("/packet/update/:id", verifyUser, adminOnly, updatePacket);
-router.delete("/delete/packet/:id", verifyUser, adminOnly, destroyData);
+router.get("/packettransactions", verifyUser, getPackets);
+router.get("/packet/added", verifyUser, addedPackets);
+router.get("/packet/taked", verifyUser, takedPackets);
+router.get("/packet/take/:id", verifyUser, takePacket);
+router.get("/packet/edit/:id", verifyUser, takePacket);
+router.post("/packet/add", verifyUser, addPacket);
+router.patch("/packet/update/:id", verifyUser, updatePacket);
+router.delete("/delete/packet/:id", verifyUser, destroyData);
 
 export default router;

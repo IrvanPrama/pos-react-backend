@@ -20,13 +20,13 @@ import { verifyUser } from "../middleware/AuthUser.js";
 const router = express.Router();
 
 // Rute untuk mendapatkan seluruh transaksi
-router.get("/transaction", getTransactions);
-router.get("/transactiontotalStok", getTotalStokByProductId);
-router.get("/transactiontotalStok/02", getTotalStokByProductId02);
-router.get("/transactiontotalStok/03", getTotalStokByProductId03);
-router.get("/transactiontotalQty", getTotalQtyByProductId);
-router.get("/transactiontotalQty/02", getTotalQtyByProductId02);
-router.get("/transactiontotalQty/03", getTotalQtyByProductId03);
+router.get("/transaction", verifyUser, getTransactions);
+router.get("/transactiontotalStok", verifyUser, getTotalStokByProductId);
+router.get("/transactiontotalStok/02", verifyUser, getTotalStokByProductId02);
+router.get("/transactiontotalStok/03", verifyUser, getTotalStokByProductId03);
+router.get("/transactiontotalQty", verifyUser, getTotalQtyByProductId);
+router.get("/transactiontotalQty/02", verifyUser, getTotalQtyByProductId02);
+router.get("/transactiontotalQty/03", verifyUser, getTotalQtyByProductId03);
 
 // Rute untuk mengambil total transaksi
 router.get("/totaltransactions", getTotalTransactions);
