@@ -7,29 +7,30 @@ import ProductRoute from "../backend/routes/ProductRoutes.js";
 import TransactionRoute from "../backend/routes/TransactionRoutes.js";
 import PacketRoute from "../backend/routes/PacketRoutes.js";
 import AuthRoute from "../backend/routes/AuthRoutes.js";
+import db from "./config/Database.js";
 import multer from "multer";
 import session from "express-session";
-// import SequelizeStore from "connect-session-sequelize";
-// import db from "./config/Database.js";
+import SequelizeStore from "connect-session-sequelize";
 import dotenv from "dotenv";
 dotenv.config();
 
 // Definisikan route dan penanganannya di sini
 const app = express();
+const sessionStore = SequelizeStore(session.Store);
+const store = new sessionStore({
+  db: db,
+});
 
-// const sessionStore = SequelizeStore(session.Store);
+// (async () => {
+//   await db.sync();
+// })();
 
-// const store = new sessionStore({
-//   db: db,
-// });
-
-// Gunakan express-session middleware
 app.use(
   session({
     secret: process.env.SESS_SECRET,
     resave: false,
     saveUninitialized: true,
-    // store: store,
+    store: store,
     cookie: {
       secure: "auto",
     },
@@ -51,12 +52,11 @@ app.use(TransactionRoute);
 app.use(PacketRoute);
 app.use(AuthRoute);
 
-// Middleware untuk memproses JSON dan URL-encoded data
 app.use(express.json());
-
 app.use(multer({ dest: "public/images" }).single("image"));
-// Mengizinkan akses ke folder public di backend
 app.use("/public", express.static("public"));
+
+// store.sync();
 
 // Menjalankan server
 app.listen(process.env.APP_PORT, () => {

@@ -1,7 +1,5 @@
 import express from "express";
 import multer from "multer";
-import { redirectLogin } from "../controllers/RedirectLogin.js";
-
 const router = express.Router();
 
 // Import controller untuk mengelola rute
@@ -13,6 +11,8 @@ import {
   updateUser,
   uploadProfile,
 } from "../controllers/UserControllers.js";
+
+import { verifyUser } from "../middleware/AuthUser.js";
 
 // Konfigurasi Multer untuk meng-handle upload gambar
 const storage = multer.diskStorage({
@@ -26,8 +26,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 const app = express();
-
-app.use("/users", redirectLogin);
 
 // Rute untuk meng-upload gambar pengguna
 router.post("/upload/profile/:id", upload.single("image"));

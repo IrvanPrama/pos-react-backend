@@ -15,7 +15,7 @@ export const getUsers = async (req, res) => {
 export const addUser = async (req, res) => {
   try {
     // Destructure body object
-    const { user_name, user_nohp, user_password } = req.body;
+    const { user_name, role, user_password } = req.body;
 
     // Hash password with the generated salt
     const hashedPassword = await argon2.hash(user_password);
@@ -23,7 +23,7 @@ export const addUser = async (req, res) => {
     // Create user with hashed password
     await User.create({
       user_name,
-      user_nohp,
+      role,
       user_password: hashedPassword, // Simpan hashed password ke dalam database
     });
 

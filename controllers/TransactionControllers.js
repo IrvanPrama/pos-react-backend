@@ -2,10 +2,9 @@ import Transaction from "../models/TransactionsModel.js";
 import Product from "../models/ProductModel.js";
 import { Op } from "sequelize";
 
-// Fungsi untuk mengambil data dari database
 export const getTransactions = async (req, res) => {
   try {
-    const transactions = await Transaction.findAll(); // Menggunakan findAll() dari Sequelize
+    const transactions = await Transaction.findAll();
     res.status(200).json(transactions);
   } catch (error) {
     console.log(error.message);

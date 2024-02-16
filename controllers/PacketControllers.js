@@ -14,11 +14,10 @@ export const getPackets = async (req, res) => {
 // Fungsi untuk mengambil data dari database
 export const addedPackets = async (req, res) => {
   try {
-    const packets = await Packet.findAll(); // Menggunakan findAll() dari Sequelize
-    res.status(200).json(packets);
+    const response = await Packet.findAll(); // Menggunakan findAll() dari Sequelize
+    res.status(200).json(response);
   } catch (error) {
-    console.log(error.message);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ msg: error.message });
   }
 };
 

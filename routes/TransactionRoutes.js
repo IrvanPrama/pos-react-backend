@@ -15,10 +15,12 @@ import {
   getTotalTransactions,
 } from "../controllers/TransactionControllers.js";
 
+import { verifyUser } from "../middleware/AuthUser.js";
+
 const router = express.Router();
 
 // Rute untuk mendapatkan seluruh transaksi
-router.get("/transactions", getTransactions);
+router.get("/transaction", getTransactions);
 router.get("/transactiontotalStok", getTotalStokByProductId);
 router.get("/transactiontotalStok/02", getTotalStokByProductId02);
 router.get("/transactiontotalStok/03", getTotalStokByProductId03);
