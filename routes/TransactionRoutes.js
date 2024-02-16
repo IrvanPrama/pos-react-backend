@@ -15,7 +15,7 @@ import {
   getTotalTransactions,
 } from "../controllers/TransactionControllers.js";
 
-import { verifyUser } from "../middleware/AuthUser.js";
+// import { verifyUser } from "../middleware/AuthUser.js";
 
 const router = express.Router();
 

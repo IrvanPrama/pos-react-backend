@@ -1,0 +1,358 @@
+*INSTALL LIBRARY
+** COPY PASTE code yang diapit **
+*** Judul penjelasan
+// NOTE
+
+- BACK-END
+  Map: Install >> Atur penyimpanan >> Tambahkan provider
+
+- A. Install pustaka (library)
+  *npm i connect-session-sequelize
+  *npm i express-session
+  *npm i path
+
+- B. Atur file index.js yang ada di backend/index.js
+  // 1. Atur DB
+
+**
+    import db from "./config/Database.js";
+
+    //code lainnya
+
+    const store = new sessionStore({
+    db: db,
+    });
+**
+
+//2. Atur Session Store
+
+**
+    import SequelizeStore from "connect-session-sequelize";
+
+    // code lainnya
+
+    const sessionStore = SequelizeStore(session.Store);
+    const sessionStore = SequelizeStore(session.Store);
+
+    app.use(
+    session({
+    secret: process.env.SESS_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    store: store,
+    cookie: {
+    secure: "auto",
+    },
+    })
+    );
+
+    app.use(bodyParser.json());
+    app.use(
+    cors({
+    credentials: true,
+    origin: "http://localhost:3000",
+    })
+    );
+**
+
+//3 Syncronisasi store
+
+**
+    store.sync();
+**
+
+//HASIL AKHIR CODENYA
+**
+    import express from "express";
+    //1 import cors body pharser
+    // import cors from "cors";
+    // import bodyParser from "body-parser";
+    import UserRoute from "../backend/routes/UserRoutes.js";
+    import ProductMenuRoute from "../backend/routes/ProductMenuRoutes.js";
+    import ProductRoute from "../backend/routes/ProductRoutes.js";
+    import TransactionRoute from "../backend/routes/TransactionRoutes.js";
+    import PacketRoute from "../backend/routes/PacketRoutes.js";
+    import AuthRoute from "../backend/routes/AuthRoutes.js";
+    // import db
+    // import db from "./config/Database.js";
+    import multer from "multer";
+    //import session sequelize
+    // import session from "express-session";
+    // import SequelizeStore from "connect-session-sequelize";
+    import SequelizeStore from "connect-session-sequelize";
+    import dotenv from "dotenv";
+    dotenv.config();
+
+    const app = express();
+    // 2 atur session
+    // const sessionStore = SequelizeStore(session.Store);
+
+    // const store = new sessionStore({
+    //   db: db,
+    // });
+
+    // (async () => {
+    //   await db.sync();
+    // })();
+
+    // app.use(
+    //   session({
+    //     secret: process.env.SESS_SECRET,
+    //     resave: false,
+    //     saveUninitialized: true,
+    //     store: store,
+    //     cookie: {
+    //       secure: "auto",
+    //     },
+    //   })
+    // );
+
+    // app.use(bodyParser.json());
+    // app.use(
+    //   cors({
+    //     credentials: true,
+    //     origin: "http://localhost:3000",
+    //   })
+    // );
+    app.use(UserRoute);
+    app.use(ProductRoute);
+    app.use(ProductMenuRoute);
+
+    app.use(TransactionRoute);
+    app.use(PacketRoute);
+    app.use(AuthRoute);
+
+    app.use(express.json());
+    app.use(multer({ dest: "public/images" }).single("image"));
+    app.use("/public", express.static("public"));
+
+    //3 Sync Store
+    // store.sync();
+
+    // Menjalankan server
+    app.listen(process.env.APP_PORT, () => {
+      console.log("Server up and running...");
+    });
+
+**
+
+C. Atur AuthRoutes.js di /backend/routes/AuthRoutes.js
+//1. buat code router untuk login dan logout, seperti berikut:
+
+    router.get("/me", Me);
+    router.post("/login", login);
+    router.delete("/logout", logout);
+
+
+//HASIL AKHIR CODE AuthROutes.js
+**
+    // routers/authRouter.js
+    import express from "express";
+    import { login, logout, Me } from "../controllers/AuthControllers.js";
+
+    const router = express.Router();
+    // Step 14, auth login
+    // Step 15, ada di AuthController.js
+    router.get("/me", Me);
+    router.post("/login", login);
+    router.delete("/logout", logout);
+
+    export default router;
+
+**
+
+_______________________________________________________________________________________________________________________
+D. Buat Otorisasi, setiap user yang masuk ke suatu halaman harus login terlebih dahulu, kalau tidak halama akan error.
+
+// 1. Import 
+**
+    import { verifyUser, adminOnly } from "../middleware/AuthUser.js";
+**
+
+// 2. Tambahkan: 
+
+verifyUser, adminOnly
+
+contoh:
+router.get("/packettransactions", verifyUser, adminOnly, getPackets);
+
+//HASIL AKHIR FILE PacketRoutes.js 
+
+**
+    import express from "express";
+    import {
+      getPackets,
+      addPacket,
+      takePacket,
+      destroyData,
+      addedPackets,
+      takedPackets,
+      updatePacket,
+    } from "../controllers/PacketControllers.js";
+    import { verifyUser, adminOnly } from "../middleware/AuthUser.js";
+
+    const router = express.Router();
+
+    router.get("/packettransactions", verifyUser, adminOnly, getPackets);
+    router.get("/packet/added", verifyUser, adminOnly, addedPackets);
+    router.get("/packet/taked", verifyUser, adminOnly, takedPackets);
+    router.get("/packet/take/:id", verifyUser, adminOnly, takePacket);
+    router.get("/packet/edit/:id", verifyUser, adminOnly, takePacket);
+    router.post("/packet/add", verifyUser, adminOnly, addPacket);
+    router.patch("/packet/update/:id", verifyUser, adminOnly, updatePacket);
+    router.delete("/delete/packet/:id", verifyUser, adminOnly, destroyData);
+
+    export default router;
+**
+
+// Laukan pada semua routes kecuali UserRoutes.js karena kita perlu untuk membuat user baru.
+
+
+
+
+
+_______________________________________________________________________________________________________________________
+E. Urus Model
+
+//UserModel.js pada backend/models/UserModel.js
+
+Tambahkan field:
+- uuid
+- role
+
+//1. menambahkan uuid
+
+**
+    uuid: {
+      type: DataTypes.STRING,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+**
+
+
+//2. Menambahkan role
+
+**
+      role: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+      },
+    },
+**
+
+//3. Aktifkan sync untuk update colom di tabel, kemudian non aktifkan lagi untuk stop update.
+
+**
+    (async () => {
+      try {
+        await User.sync({ alter: true });
+        console.log("Alter table berhasil!");
+      } catch (error) {
+        console.error("Terjadi kesalahan saat melakukan alter table:", error);
+      }
+    })();
+**
+
+
+_______________________________________________________________________________________________________________________
+F. Buat fungsi login menyimpan session pada AuthController.js di alamat backend/controller/AuthControllers.js
+
+// Ssusunan code
+req.session.<<nama_sessi>> = <<kolom_tabel>>;;
+
+contoh:
+req.session.sid = user.uuid;
+
+HASIL AKHIR AuthController.js
+
+**
+    // controllers/authController.js
+    import User from "../models/UserModel.js";
+    import argon2 from "argon2";
+
+    export const login = async (req, res) => {
+      const user = await User.findOne({
+        where: {
+          user_name: req.body.username,
+        },
+      });
+      if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });
+      const match = await argon2.verify(user.user_password, req.body.password);
+      if (!match) return res.status(400).json({ msg: "Wrong Password" });
+      req.session.sid = user.uuid;
+      const sesi = req.session.sid;
+      const uuid = user.uuid;
+      const user_name = user.user_name;
+      const role = user.role;
+      res
+        .status(200)
+        .json({ sesi, uuid, user_name, role, message: "Login successful" });
+    };
+
+    export const Me = async (req, res) => {
+      if (!req.session.sid) {
+        return res.status(401).json({ msg: "Mohon login ke akun Anda!" });
+      }
+      const user = await User.findOne({
+        attributes: ["user_name"],
+        where: {
+          user_name: req.session.sid,
+        },
+      });
+      if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });
+      res.status(200).json(user);
+    };
+
+    // Rute untuk logout
+    export const logout = (req, res) => {
+      req.session.destroy((err) => {
+        if (err) return res.status(400).json({ msg: "Tidak dapat logout" });
+        res.status(200).json({ msg: "Anda telah logout" });
+      });
+    };
+
+**
+
+
+_______________________________________________________________________________________________________________________
+G. Buat middleware di backend/middleware/AuthUser.js
+
+HASIL AKHIR verifyUser
+**
+    export const verifyUser = async (req, res, next) => {
+      if (!req.session.sid) {
+        const sesi = req.session.sid;
+        return res.status(401).json({ sesi, message: "Mohon login ke akun Anda!" });
+      }
+      const user = await User.findOne({
+        where: {
+          uuid: req.session.sid,
+        },
+      });
+      if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });
+      req.sid = user.uuid;
+      req.role = user.role;
+      next();
+    };
+
+**
+
+CHALLENGE adminOnly
+
+**
+  export const adminOnly = async (req, res, next) => {
+
+     //cari user yang uuid sama dengan uuid yang disimpan session    
+     // lengkapi code di UserModel.js 
+  if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });
+  if (user.role !== "admin")
+    return res.status(403).json({ msg: "Akses terlarang" });
+  next();
+  }; 
+**

@@ -8,18 +8,18 @@ import {
   takedPackets,
   updatePacket,
 } from "../controllers/PacketControllers.js";
-import { verifyUser, adminOnly } from "../middleware/AuthUser.js";
+// import { verifyUser, adminOnly } from "../middleware/AuthUser.js";
 
 const router = express.Router();
 
 // Rute untuk mendapatkan seluruh transaksi
-router.get("/packettransactions", verifyUser, adminOnly, getPackets);
-router.get("/packet/added", verifyUser, adminOnly, addedPackets);
-router.get("/packet/taked", verifyUser, adminOnly, takedPackets);
-router.get("/packet/take/:id", verifyUser, adminOnly, takePacket);
-router.get("/packet/edit/:id", verifyUser, adminOnly, takePacket);
-router.post("/packet/add", verifyUser, adminOnly, addPacket);
-router.patch("/packet/update/:id", verifyUser, adminOnly, updatePacket);
-router.delete("/delete/packet/:id", verifyUser, adminOnly, destroyData);
+router.get("/packettransactions", getPackets);
+router.get("/packet/added", addedPackets);
+router.get("/packet/taked", takedPackets);
+router.get("/packet/take/:id", takePacket);
+router.get("/packet/edit/:id", takePacket);
+router.post("/packet/add", addPacket);
+router.patch("/packet/update/:id", updatePacket);
+router.delete("/delete/packet/:id", destroyData);
 
 export default router;

@@ -8,10 +8,16 @@ export const login = async (req, res) => {
       user_name: req.body.username,
     },
   });
-  if (!user) return res.status(404).json({ msg: "User tidak ditemukan" });
+
+  //1. Lengkapi logika if dibawah, kalau user tidak ada maka keluarkan status 404 error dan pesan "User tidak ditemukan"
+  if (___) return res.status(___).json({ ___: "_____" });
+
   const match = await argon2.verify(user.user_password, req.body.password);
-  if (!match) return res.status(400).json({ msg: "Wrong Password" });
-  req.session.sid = user.uuid;
+
+  // 2. Tuliskan logika if jika password tidak match, maka keluarkan status 400 error dan pesan "Password Salah"
+
+  //!!! MENYIMPAN SESSION
+  // req.session.sid = user.uuid;
   const sesi = req.session.sid;
   const uuid = user.uuid;
   const user_name = user.user_name;

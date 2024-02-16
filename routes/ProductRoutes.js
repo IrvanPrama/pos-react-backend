@@ -7,7 +7,7 @@ import {
   createProduct,
   destroyData,
 } from "../controllers/ProductControllers.js";
-import { verifyUser } from "../middleware/AuthUser.js";
+// import { verifyUser } from "../middleware/AuthUser.js";
 
 //definisikan router
 const router = express.Router();

@@ -12,8 +12,6 @@ import {
   uploadProfile,
 } from "../controllers/UserControllers.js";
 
-import { verifyUser } from "../middleware/AuthUser.js";
-
 // Konfigurasi Multer untuk meng-handle upload gambar
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
