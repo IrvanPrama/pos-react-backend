@@ -22,6 +22,16 @@
     const store = new sessionStore({
     db: db,
     });
+
+**
+
+// 1.1. Syncronisasi DB
+
+**
+     (async () => {
+     await db.sync();
+     })();
+
 **
 
 //2. Atur Session Store
