@@ -2,7 +2,7 @@
 import User from "../models/UserModel.js";
 import argon2 from "argon2";
 
-export const login = async (req, res) => {
+export const Login = async (req, res) => {
   const user = await User.findOne({
     where: {
       user_name: req.body.username,
@@ -36,7 +36,7 @@ export const Me = async (req, res) => {
 };
 
 // Rute untuk logout
-export const logout = (req, res) => {
+export const Logout = (req, res) => {
   req.session.destroy((err) => {
     if (err) return res.status(400).json({ msg: "Tidak dapat logout" });
     res.status(200).json({ msg: "Anda telah logout" });
