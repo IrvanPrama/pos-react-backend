@@ -29,11 +29,11 @@ const Packet = db.define(
 export default Packet;
 
 // kalau tidak ada data, maka buatkan data yang sudah ditentukan
-// (async () => {
-//   try {
-//     await Packet.sync({ alter: true });
-//     console.log("Alter table berhasil!");
-//   } catch (error) {
-//     console.error("Terjadi kesalahan saat melakukan alter table:", error);
-//   }
-// })();
+(async () => {
+  try {
+    await Packet.sync({ alter: true });
+    console.log("Alter table berhasil!");
+  } catch (error) {
+    console.error("Terjadi kesalahan saat melakukan alter table:", error);
+  }
+})();

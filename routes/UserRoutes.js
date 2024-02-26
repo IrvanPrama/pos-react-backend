@@ -31,10 +31,10 @@ const app = express();
 router.post("/upload/profile/:id", upload.single("image"));
 
 // Tentukan rute-rute Anda
-router.get("/users", verifyUser, adminOnly, getUsers);
+router.get("/users", getUsers);
 router.get("/user/edit/:id", verifyUser, adminOnly, getUserById);
 router.patch("/user/update/:id", verifyUser, adminOnly, updateUser); // Menggunakan Multer untuk pengunggahan
-router.post("/user/add", verifyUser, adminOnly, addUser);
+router.post("/user/add", addUser);
 router.delete("/delete/users/:id", verifyUser, adminOnly, destroyUser);
 
 // Export router untuk digunakan di dalam aplikasi utama Anda

@@ -24,11 +24,11 @@ const Product = db.define(
 export default Product;
 
 // kalau tidak ada data, maka buatkan data yang sudah ditentukan
-// (async () => {
-//   try {
-//     await Product.sync({ alter: true });
-//     console.log("Alter table berhasil!");
-//   } catch (error) {
-//     console.error("Terjadi kesalahan saat melakukan alter table:", error);
-//   }
-// })();
+(async () => {
+  try {
+    await Product.sync({ alter: true });
+    console.log("Alter table berhasil!");
+  } catch (error) {
+    console.error("Terjadi kesalahan saat melakukan alter table:", error);
+  }
+})();
