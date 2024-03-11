@@ -12,7 +12,20 @@ export const getTransactions = async (req, res) => {
   }
 };
 
-// Fungsi untuk menambahkan transaksi ke database
+export const updateTransaction = async (req, res) => {
+  try {
+    await Transaction.update(req.body, {
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.status(200).json({ msg: "Transaksi Dibuat" });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
 export const addTransactions = async (req, res) => {
   try {
     await Transaction.create(req.body);
@@ -154,7 +167,6 @@ export const getTotalQtyByProductId03 = async (req, res) => {
   }
 };
 
-// Controller untuk mengambil jumlah qty berdasarkan ID 03 produk
 export const getTotalTransactions = async (req, res) => {
   try {
     const transactions = await Transaction.findAll();
@@ -170,11 +182,50 @@ export const getTotalTransactions = async (req, res) => {
   }
 };
 
+export const getTransactionById = async (req, res) => {
+  try {
+    const response = await Transaction.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.status(200).json(response);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+export const getTransactionsByUserId = async (req, res) => {
+  try {
+    const response = await Transaction.findAll({
+      where: {
+        user_id: req.params.user_id,
+      },
+    });
+    res.status(200).json(response);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+export const getTransactionByUserId = async (req, res) => {
+  try {
+    const response = await Transaction.findOne({
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.status(200).json(response);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 // Hapus data
 export const destroyData = async (req, res) => {
   try {
     await Transaction.destroy({
-      where: { id: req.params.id },
+      where: { tr_id: req.params.tr_id },
     });
     res.status(200).json({ msg: "Data Deleted" });
   } catch (error) {

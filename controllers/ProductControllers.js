@@ -28,3 +28,17 @@ export const destroyData = async (req, res) => {
     console.log(error.message);
   }
 };
+
+export const updateProduct = async (req, res) => {
+  try {
+    await Product.update(req.body, {
+      where: {
+        id: req.params.id,
+      },
+    });
+    res.status(200).json({ msg: "Transaksi Dibuat" });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};

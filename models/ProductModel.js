@@ -14,6 +14,7 @@ const Product = db.define(
     product_name: DataTypes.STRING,
     product_price: DataTypes.INTEGER,
     product_stok: DataTypes.INTEGER,
+    product_sold: DataTypes.INTEGER,
   },
   {
     freezeTableName: true,

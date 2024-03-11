@@ -12,6 +12,10 @@ import {
   handleUpdateStatus,
   filterTransactions,
   getTotalTransactions,
+  updateTransaction,
+  getTransactionsByUserId,
+  getTransactionByUserId,
+  getTransactionById,
 } from "../controllers/TransactionControllers.js";
 
 import { verifyUser } from "../middleware/AuthUser.js";
@@ -32,8 +36,12 @@ router.get("/totaltransactions", getTotalTransactions);
 
 router.post("/transaction/add", addTransactions);
 router.post("/packet/take", addTransactions);
-router.delete("/destroy/data/:id", destroyData);
+router.delete("/destroy/data/:tr_id", destroyData);
 router.patch("/transaction/status/:id", handleUpdateStatus);
+router.get("/transaction/:id", getTransactionById);
+router.get("/transaction/:user_id", getTransactionByUserId);
+router.get("/transactions/:user_id", getTransactionsByUserId);
+router.patch("/transaction/update/:id", updateTransaction);
 router.get("/transactions/filter", filterTransactions);
 
 export default router;

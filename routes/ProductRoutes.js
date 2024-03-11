@@ -6,6 +6,7 @@ import {
   getProducts,
   createProduct,
   destroyData,
+  updateProduct,
 } from "../controllers/ProductControllers.js";
 import { verifyUser } from "../middleware/AuthUser.js";
 
@@ -14,6 +15,7 @@ const router = express.Router();
 
 router.get("/product", verifyUser, getProducts);
 router.post("/product/send", verifyUser, createProduct);
+router.patch("/product/update/:id", verifyUser, updateProduct);
 router.delete("/product/destroy/:id", verifyUser, destroyData);
 
 export default router;

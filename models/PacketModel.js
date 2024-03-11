@@ -13,11 +13,13 @@ const Packet = db.define(
     user_id: DataTypes.STRING,
     user_name: DataTypes.STRING,
     product_id: DataTypes.STRING,
+    tr_id: DataTypes.STRING,
     product_name: DataTypes.STRING,
     product_price: DataTypes.INTEGER,
     product_qty: DataTypes.INTEGER,
     product_taked: DataTypes.INTEGER,
     product_total: DataTypes.INTEGER,
+    product_pay: DataTypes.INTEGER,
     transaction_type: DataTypes.STRING,
   },
   {
